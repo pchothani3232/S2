@@ -1,0 +1,36 @@
+USE [DatabaseConfiguration1]
+GO
+/****** Object:  StoredProcedure [dbo].[Product_Sp]    Script Date: 04-08-2025 01:26:09 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER        proc [dbo].[Product_Sp]
+@Product_Id int = null,
+@Product_Name nvarchar(100)='',
+@Product_Code nvarchar(50)='',
+@Product_SalesRate numeric(18,2)=0,
+@Product_FreeQty decimal(10,2) =0,
+@Product_Discount decimal(5,2)=0,
+@Product_AvailableQty decimal(10,2)=0,
+@Status nvarchar(max)
+AS
+BEGIN
+	
+	IF @Status='SearchByCode'
+	BEGIN
+		select * from Product where Product_Code like  @Product_Code + '%' ;
+	END
+
+	IF @Status='SearchByName'
+	BEGIN
+		select * from Product where Product_Name like  @Product_Name +'%' ;
+	END
+END
+
+exec [Product_Sp]
+@Status = 'SearchByName',
+@Product_Name = 'A';
+
+
+select * from Product;
