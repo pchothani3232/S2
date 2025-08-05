@@ -217,8 +217,9 @@ namespace DatabaseConfiguration
                 txtProductName.Text = row.Cells["Product_Name"].Value?.ToString() ?? string.Empty;
                 txtProductCode.Text = row.Cells["Product_Code"].Value?.ToString() ?? string.Empty;
                 txtProductRate.Text = row.Cells["Product_SalesRate"].Value?.ToString() ?? string.Empty;
-
+            
                 lblAvailableQty.Text = row.Cells["Product_AvailableQty"].Value?.ToString() ?? string.Empty;
+
 
                 txtProductName.TextChanged += txtProductName_TextChanged;
                 txtProductCode.TextChanged += txtProductCode_TextChanged;
@@ -323,6 +324,7 @@ namespace DatabaseConfiguration
                 existingRow.Cells["ProductSubTotal"].Value = ProductSubTotal;
 
                 existingRow.Cells["ProductDiscount"].Value = Convert.ToDecimal(existingRow.Cells["ProductDiscount"].Value) + Convert.ToDecimal(txtProductDiscount.Text);
+                existingRow.Cells["Product_DiscountPercentage"].Value = Convert.ToDecimal(existingRow.Cells["Product_DiscountPercentage"].Value) + Convert.ToDecimal(txtProductDiscount.Text);
 
                 decimal DiscountAmount = (ProductSubTotal * (Convert.ToDecimal(existingRow.Cells["ProductDiscount"].Value))) / 100;
                 existingRow.Cells["ProductDiscount"].Value = DiscountAmount;
@@ -349,6 +351,7 @@ namespace DatabaseConfiguration
                 row.Cells[dataGridView3.Columns["ProductSalesRate"].Index].Value = txtProductRate.Text;
                 row.Cells[dataGridView3.Columns["ProductQty"].Index].Value = txtProductQty.Text;
                 row.Cells[dataGridView3.Columns["ProductFreeQty"].Index].Value = txtProductFreeQty.Text;
+                row.Cells[dataGridView3.Columns["Product_DiscountPercentage"].Index].Value = txtProductDiscount.Text;
                 row.Cells[dataGridView3.Columns["ProductDiscount"].Index].Value = txtProductDiscount.Text;
                 row.Cells[dataGridView3.Columns["ProductAvailableQty"].Index].Value = lblAvailableQty.Text;
 
@@ -678,48 +681,22 @@ namespace DatabaseConfiguration
                     con.Close();
                 }
 
+
                 if(sih_id > 0)
                 {
                     foreach (DataGridViewRow row in dataGridView3.Rows.Cast<DataGridViewRow>().Where(row => !row.IsNewRow))
                     {
                         using (SqlCommand cmdSD = new SqlCommand("SP_SalesInvoiceDetail_new", con))
                         {
-                            //con.Open();
-                            //cmdSD.CommandType = CommandType.StoredProcedure;
-                            //cmdSD.Parameters.AddWithValue("@Status", "insert");
-                            //cmdSD.Parameters.AddWithValue("@Product_Name", row.Cells["ProductName"].Value.ToString());
-                            //cmdSD.Parameters.AddWithValue("@Product_Code", row.Cells["ProductCode"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_SaleRate", row.Cells["ProductSalesRate"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_Qty", row.Cells["ProductQty"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_FreeQty", row.Cells["ProductFreeQty"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_Discount", row.Cells["ProductDiscount"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_SubTotal", row.Cells["ProductSubTotal"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_NetAmount", row.Cells["ProductNetAmount"].Value);
-                            //cmdSD.ExecuteNonQuery();
-                            //con.Close();
-
-                            //con.Open();
-                            //cmdSD.CommandType = CommandType.StoredProcedure;
-                            //cmdSD.Parameters.AddWithValue("@Status", "SID_insert");
-                            //cmdSD.Parameters.AddWithValue("@Product_Name", row.Cells["ProductName"].Value.ToString());
-                            //cmdSD.Parameters.AddWithValue("@Product_Code", row.Cells["ProductCode"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_SaleRate", row.Cells["ProductSalesRate"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_Qty", row.Cells["ProductQty"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_FreeQty", row.Cells["ProductFreeQty"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_Discount", row.Cells["ProductDiscount"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_SubTotal", row.Cells["ProductSubTotal"].Value);
-                            //cmdSD.Parameters.AddWithValue("@Product_NetAmount", row.Cells["ProductNetAmount"].Value);
-                            //cmdSD.ExecuteNonQuery();
-                            //con.Close();
-
-
                             con.Open();
                             cmdSD.CommandType = CommandType.StoredProcedure;
                             cmdSD.Parameters.AddWithValue("@sid_SIH_id", sih_id);
+
                             cmdSD.Parameters.AddWithValue("@sid_mm_id", row.Cells["ProductCode"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_Qty", row.Cells["ProductQty"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_FreeQty", row.Cells["ProductFreeQty"].Value);
-                           // cmdSD.Parameters.AddWithValue("@sid_Discount", row.Cells[].Value);
+
+                            cmdSD.Parameters.AddWithValue("@sid_Discount", row.Cells["Product_DiscountPercentage"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_DiscountAmt", row.Cells["ProductDiscount"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_SubTotal", row.Cells["ProductSubTotal"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_NetAmount", row.Cells["ProductNetAmount"].Value);
@@ -728,8 +705,42 @@ namespace DatabaseConfiguration
                         }
                     }
                 }
-                
-           
+
+                string productCode, updateqty,deleteqty;
+                int qty, freeQty;
+                foreach (DataGridViewRow row in dataGridView3.Rows.Cast<DataGridViewRow>().Where(row=>!row.IsNewRow))
+                {
+
+                    productCode = row.Cells["ProductCode"].Value?.ToString();
+                    qty = Convert.ToInt32(row.Cells["ProductQty"].Value ?? 0);
+                    freeQty = Convert.ToInt32(row.Cells["ProductFreeQty"].Value ?? 0);
+
+                    updateqty = @"
+                    UPDATE Product
+                    SET Product_AvailableQty = Product_AvailableQty - (@Qty + @FreeQty)
+                    WHERE Product_Code = @ProductCode";
+
+                    using (SqlCommand cmd = new SqlCommand(updateqty, con))
+                    {
+                        con.Open();
+                        cmd.Parameters.AddWithValue("@Qty", qty);
+                        cmd.Parameters.AddWithValue("@FreeQty", freeQty);
+                        cmd.Parameters.AddWithValue("@ProductCode", productCode);
+
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+
+                    deleteqty = @"delete from Product where Product_AvailableQty = 0";
+                    using (SqlCommand cmd = new SqlCommand(deleteqty, con))
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+
+                }
+
             }
             catch (Exception ex)
             {
