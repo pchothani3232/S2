@@ -76,18 +76,13 @@ namespace DatabaseConfiguration
             this.label10 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
-            this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductSalesRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductFreeQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductDiscount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductAvailableQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductSubTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProductNetAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label16 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Customer_Name1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Customer_PhoneNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Customer_State = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Customer_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.txtCustomerName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -100,10 +95,16 @@ namespace DatabaseConfiguration
             this.label20 = new System.Windows.Forms.Label();
             this.SalesDate = new System.Windows.Forms.DateTimePicker();
             this.cmbState = new System.Windows.Forms.ComboBox();
-            this.Customer_Name1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Customer_PhoneNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Customer_State = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Customer_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductSalesRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductFreeQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductDiscount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Product_DiscountPercentage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductAvailableQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductSubTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductNetAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -613,6 +614,7 @@ namespace DatabaseConfiguration
             this.ProductQty,
             this.ProductFreeQty,
             this.ProductDiscount,
+            this.Product_DiscountPercentage,
             this.ProductAvailableQty,
             this.ProductSubTotal,
             this.ProductNetAmount});
@@ -622,66 +624,6 @@ namespace DatabaseConfiguration
             this.dataGridView3.TabIndex = 3;
             this.dataGridView3.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellValueChanged);
             this.dataGridView3.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellValueChanged);
-            // 
-            // ProductName
-            // 
-            this.ProductName.DataPropertyName = "ProductName";
-            this.ProductName.HeaderText = "Product Name";
-            this.ProductName.Name = "ProductName";
-            this.ProductName.ReadOnly = true;
-            // 
-            // ProductCode
-            // 
-            this.ProductCode.DataPropertyName = "ProductCode";
-            this.ProductCode.HeaderText = "Product Code";
-            this.ProductCode.Name = "ProductCode";
-            this.ProductCode.ReadOnly = true;
-            // 
-            // ProductSalesRate
-            // 
-            this.ProductSalesRate.DataPropertyName = "ProductSalesRate";
-            this.ProductSalesRate.HeaderText = "Product SalesRate";
-            this.ProductSalesRate.Name = "ProductSalesRate";
-            this.ProductSalesRate.ReadOnly = true;
-            // 
-            // ProductQty
-            // 
-            this.ProductQty.DataPropertyName = "ProductQty";
-            this.ProductQty.HeaderText = "Product Qty";
-            this.ProductQty.Name = "ProductQty";
-            // 
-            // ProductFreeQty
-            // 
-            this.ProductFreeQty.DataPropertyName = "ProductFreeQty";
-            this.ProductFreeQty.HeaderText = "Product FreeQty";
-            this.ProductFreeQty.Name = "ProductFreeQty";
-            // 
-            // ProductDiscount
-            // 
-            this.ProductDiscount.DataPropertyName = "ProductDiscount";
-            this.ProductDiscount.HeaderText = "Product Discount";
-            this.ProductDiscount.Name = "ProductDiscount";
-            // 
-            // ProductAvailableQty
-            // 
-            this.ProductAvailableQty.DataPropertyName = "ProductAvailableQty";
-            this.ProductAvailableQty.HeaderText = "Product AvailableQty";
-            this.ProductAvailableQty.Name = "ProductAvailableQty";
-            this.ProductAvailableQty.ReadOnly = true;
-            // 
-            // ProductSubTotal
-            // 
-            this.ProductSubTotal.DataPropertyName = "ProductSubTotal";
-            this.ProductSubTotal.HeaderText = "Product SubTotal";
-            this.ProductSubTotal.Name = "ProductSubTotal";
-            this.ProductSubTotal.ReadOnly = true;
-            // 
-            // ProductNetAmount
-            // 
-            this.ProductNetAmount.DataPropertyName = "ProductNetAmount";
-            this.ProductNetAmount.HeaderText = "Product NetAmount";
-            this.ProductNetAmount.Name = "ProductNetAmount";
-            this.ProductNetAmount.ReadOnly = true;
             // 
             // label16
             // 
@@ -721,6 +663,34 @@ namespace DatabaseConfiguration
             this.dataGridView1.TabIndex = 36;
             this.dataGridView1.Visible = false;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // Customer_Name1
+            // 
+            this.Customer_Name1.DataPropertyName = "Customer_Name";
+            this.Customer_Name1.HeaderText = "Customer Name";
+            this.Customer_Name1.Name = "Customer_Name1";
+            this.Customer_Name1.ReadOnly = true;
+            // 
+            // Customer_PhoneNumber
+            // 
+            this.Customer_PhoneNumber.DataPropertyName = "Customer_PhoneNumber";
+            this.Customer_PhoneNumber.HeaderText = "Phone Number";
+            this.Customer_PhoneNumber.Name = "Customer_PhoneNumber";
+            this.Customer_PhoneNumber.ReadOnly = true;
+            // 
+            // Customer_State
+            // 
+            this.Customer_State.DataPropertyName = "StateName";
+            this.Customer_State.HeaderText = "State";
+            this.Customer_State.Name = "Customer_State";
+            this.Customer_State.ReadOnly = true;
+            // 
+            // Customer_Address
+            // 
+            this.Customer_Address.DataPropertyName = "Customer_Address";
+            this.Customer_Address.HeaderText = "Address";
+            this.Customer_Address.Name = "Customer_Address";
+            this.Customer_Address.ReadOnly = true;
             // 
             // label1
             // 
@@ -835,33 +805,71 @@ namespace DatabaseConfiguration
             this.cmbState.Size = new System.Drawing.Size(200, 21);
             this.cmbState.TabIndex = 10;
             // 
-            // Customer_Name1
+            // ProductName
             // 
-            this.Customer_Name1.DataPropertyName = "Customer_Name";
-            this.Customer_Name1.HeaderText = "Customer Name";
-            this.Customer_Name1.Name = "Customer_Name1";
-            this.Customer_Name1.ReadOnly = true;
+            this.ProductName.DataPropertyName = "ProductName";
+            this.ProductName.HeaderText = "Product Name";
+            this.ProductName.Name = "ProductName";
+            this.ProductName.ReadOnly = true;
             // 
-            // Customer_PhoneNumber
+            // ProductCode
             // 
-            this.Customer_PhoneNumber.DataPropertyName = "Customer_PhoneNumber";
-            this.Customer_PhoneNumber.HeaderText = "Phone Number";
-            this.Customer_PhoneNumber.Name = "Customer_PhoneNumber";
-            this.Customer_PhoneNumber.ReadOnly = true;
+            this.ProductCode.DataPropertyName = "ProductCode";
+            this.ProductCode.HeaderText = "Product Code";
+            this.ProductCode.Name = "ProductCode";
+            this.ProductCode.ReadOnly = true;
             // 
-            // Customer_State
+            // ProductSalesRate
             // 
-            this.Customer_State.DataPropertyName = "StateName";
-            this.Customer_State.HeaderText = "State";
-            this.Customer_State.Name = "Customer_State";
-            this.Customer_State.ReadOnly = true;
+            this.ProductSalesRate.DataPropertyName = "ProductSalesRate";
+            this.ProductSalesRate.HeaderText = "Product SalesRate";
+            this.ProductSalesRate.Name = "ProductSalesRate";
+            this.ProductSalesRate.ReadOnly = true;
             // 
-            // Customer_Address
+            // ProductQty
             // 
-            this.Customer_Address.DataPropertyName = "Customer_Address";
-            this.Customer_Address.HeaderText = "Address";
-            this.Customer_Address.Name = "Customer_Address";
-            this.Customer_Address.ReadOnly = true;
+            this.ProductQty.DataPropertyName = "ProductQty";
+            this.ProductQty.HeaderText = "Product Qty";
+            this.ProductQty.Name = "ProductQty";
+            // 
+            // ProductFreeQty
+            // 
+            this.ProductFreeQty.DataPropertyName = "ProductFreeQty";
+            this.ProductFreeQty.HeaderText = "Product FreeQty";
+            this.ProductFreeQty.Name = "ProductFreeQty";
+            // 
+            // ProductDiscount
+            // 
+            this.ProductDiscount.DataPropertyName = "ProductDiscount";
+            this.ProductDiscount.HeaderText = "Product Discount";
+            this.ProductDiscount.Name = "ProductDiscount";
+            // 
+            // Product_DiscountPercentage
+            // 
+            this.Product_DiscountPercentage.DataPropertyName = "Product_DiscountPercentage";
+            this.Product_DiscountPercentage.HeaderText = "Product_DiscountPercentage";
+            this.Product_DiscountPercentage.Name = "Product_DiscountPercentage";
+            // 
+            // ProductAvailableQty
+            // 
+            this.ProductAvailableQty.DataPropertyName = "ProductAvailableQty";
+            this.ProductAvailableQty.HeaderText = "Product AvailableQty";
+            this.ProductAvailableQty.Name = "ProductAvailableQty";
+            this.ProductAvailableQty.ReadOnly = true;
+            // 
+            // ProductSubTotal
+            // 
+            this.ProductSubTotal.DataPropertyName = "ProductSubTotal";
+            this.ProductSubTotal.HeaderText = "Product SubTotal";
+            this.ProductSubTotal.Name = "ProductSubTotal";
+            this.ProductSubTotal.ReadOnly = true;
+            // 
+            // ProductNetAmount
+            // 
+            this.ProductNetAmount.DataPropertyName = "ProductNetAmount";
+            this.ProductNetAmount.HeaderText = "Product NetAmount";
+            this.ProductNetAmount.Name = "ProductNetAmount";
+            this.ProductNetAmount.ReadOnly = true;
             // 
             // SalesInvoice
             // 
@@ -957,18 +965,19 @@ namespace DatabaseConfiguration
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_Name1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_PhoneNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_State;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_Address;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductSalesRate;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductFreeQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductDiscount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Product_DiscountPercentage;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductAvailableQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductSubTotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductNetAmount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_Name1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_PhoneNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_State;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Customer_Address;
     }
 }
