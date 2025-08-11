@@ -661,6 +661,7 @@ namespace DatabaseConfiguration
                         con.Close();
                     }
                 }
+
                 int sih_id = 0;
                 //insert into SalesInvoice Table
                 using (SqlCommand cmdSI = new SqlCommand("USP_SalesInvoice", con))                   
@@ -691,11 +692,9 @@ namespace DatabaseConfiguration
                             con.Open();
                             cmdSD.CommandType = CommandType.StoredProcedure;
                             cmdSD.Parameters.AddWithValue("@sid_SIH_id", sih_id);
-
                             cmdSD.Parameters.AddWithValue("@sid_mm_id", row.Cells["ProductCode"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_Qty", row.Cells["ProductQty"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_FreeQty", row.Cells["ProductFreeQty"].Value);
-
                             cmdSD.Parameters.AddWithValue("@sid_Discount", row.Cells["Product_DiscountPercentage"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_DiscountAmt", row.Cells["ProductDiscount"].Value);
                             cmdSD.Parameters.AddWithValue("@sid_SubTotal", row.Cells["ProductSubTotal"].Value);
@@ -703,42 +702,49 @@ namespace DatabaseConfiguration
                             cmdSD.ExecuteNonQuery();
                             con.Close();
                         }
+                        using (SqlCommand cmdStock = new SqlCommand("SP_stock", con))
+                        {
+                            con.Open();
+                            cmdStock.CommandType = CommandType.StoredProcedure;
+                            cmdStock.Parameters.AddWithValue("@ProductCode", row.Cells["ProductCode"].Value);
+                            cmdStock.Parameters.AddWithValue("@ProductQty", (Convert.ToInt32(row.Cells["ProductQty"].Value ?? 0) + Convert.ToInt32(row.Cells["ProductFreeQty"].Value ?? 0)));
+                            cmdStock.ExecuteNonQuery();
+                            con.Close();
+                        }
                     }
                 }
 
-                string productCode, updateqty,deleteqty;
-                int qty, freeQty;
-                foreach (DataGridViewRow row in dataGridView3.Rows.Cast<DataGridViewRow>().Where(row=>!row.IsNewRow))
+                //string productCode, updateqty;
+                //int qty, freeQty;
+                //foreach (DataGridViewRow row in dataGridView3.Rows.Cast<DataGridViewRow>().Where(row => !row.IsNewRow))
+                //{
+                //    productCode = row.Cells["ProductCode"].Value?.ToString();
+                //    qty = Convert.ToInt32(row.Cells["ProductQty"].Value ?? 0);
+                //    freeQty = Convert.ToInt32(row.Cells["ProductFreeQty"].Value ?? 0);
+
+                //    updateqty = @"
+                //    UPDATE Product
+                //    SET Product_AvailableQty = Product_AvailableQty - (@Qty + @FreeQty)
+                //    WHERE Product_Code = @ProductCode";
+
+                //    using (SqlCommand cmd = new SqlCommand(updateqty, con))
+                //    {
+                //        con.Open();
+                //        cmd.Parameters.AddWithValue("@Qty", qty);
+                //        cmd.Parameters.AddWithValue("@FreeQty", freeQty);
+                //        cmd.Parameters.AddWithValue("@ProductCode", productCode);
+
+                //        cmd.ExecuteNonQuery();
+                //        con.Close();
+                //    }                    
+                //}
+
+                string deleteqty = @"delete from Product where Product_AvailableQty = 0";
+                using (SqlCommand cmd = new SqlCommand(deleteqty, con))
                 {
-
-                    productCode = row.Cells["ProductCode"].Value?.ToString();
-                    qty = Convert.ToInt32(row.Cells["ProductQty"].Value ?? 0);
-                    freeQty = Convert.ToInt32(row.Cells["ProductFreeQty"].Value ?? 0);
-
-                    updateqty = @"
-                    UPDATE Product
-                    SET Product_AvailableQty = Product_AvailableQty - (@Qty + @FreeQty)
-                    WHERE Product_Code = @ProductCode";
-
-                    using (SqlCommand cmd = new SqlCommand(updateqty, con))
-                    {
-                        con.Open();
-                        cmd.Parameters.AddWithValue("@Qty", qty);
-                        cmd.Parameters.AddWithValue("@FreeQty", freeQty);
-                        cmd.Parameters.AddWithValue("@ProductCode", productCode);
-
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-
-                    deleteqty = @"delete from Product where Product_AvailableQty = 0";
-                    using (SqlCommand cmd = new SqlCommand(deleteqty, con))
-                    {
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
                 }
 
             }
