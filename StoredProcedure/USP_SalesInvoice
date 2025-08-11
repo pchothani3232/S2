@@ -1,6 +1,6 @@
 USE [DatabaseConfiguration1]
 GO
-/****** Object:  StoredProcedure [dbo].[USP_SalesInvoice]    Script Date: 04-08-2025 01:27:36 ******/
+/****** Object:  StoredProcedure [dbo].[USP_SalesInvoice]    Script Date: 11-08-2025 00:11:56 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
